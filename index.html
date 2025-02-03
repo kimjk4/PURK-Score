@@ -3,59 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <title>PURK Score Calculator</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* Global Styles */
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      line-height: 1.6;
+      font-family: 'Montserrat', sans-serif;
+      background: #f0f8ff; /* Light pastel blue */
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
     .container {
-      max-width: 700px;
-      margin: auto;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     h1, h2 {
       text-align: center;
-    }
-    fieldset {
-      border: 1px solid #ccc;
-      padding: 15px;
+      color: #2a4d69; /* Dark pastel blue tone */
       margin-bottom: 20px;
     }
+    p {
+      line-height: 1.6;
+    }
+    /* Form Styling */
+    fieldset {
+      border: 2px solid #a8d0e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
     legend {
-      font-weight: bold;
+      font-size: 1.2em;
+      font-weight: 600;
+      color: #2a4d69;
+      padding: 0 10px;
     }
     label {
       display: block;
-      margin: 10px 0;
+      margin-bottom: 10px;
+      font-size: 1em;
+      color: #555;
+      cursor: pointer;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+      vertical-align: middle;
     }
     button {
+      background: #2a4d69;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 24px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
       display: block;
-      margin: auto;
-      padding: 10px 20px;
-      font-size: 16px;
+      margin: 0 auto 20px auto;
+    }
+    button:hover {
+      background: #1f3b55;
     }
     .result {
       margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      background-color: #f9f9f9;
+      padding: 20px;
+      background: #e6f7ff;
+      border: 1px solid #a8d0e6;
+      border-radius: 8px;
     }
-    table {
+    /* Chart Container Styling */
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 400px;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #f2f2f2;
     }
     .info {
-      font-size: 0.9em;
+      font-size: 0.95em;
       color: #555;
+      margin-bottom: 15px;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -63,7 +107,7 @@
   <div class="container">
     <h1>PURK Score Calculator</h1>
     <p>
-      PURK Score, developed at The Hospital for Sick Children (Toronto, Canada) calculates the PURK score—designed to risk-stratify boys with posterior urethral valve (PUV) at high risk of chronic kidney disease (CKD) stage ≥3.
+      This tool calculates the PURK score—designed to risk-stratify boys with posterior urethral valve (PUV) at high risk of chronic kidney disease (CKD) stage ≥3.
     </p>
     
     <form id="purkForm">
@@ -71,7 +115,7 @@
         <legend>Patient Initial Presentation Variables</legend>
         <label>
           <input type="checkbox" id="baselineCr">
-          Baseline Cr >150 µmol/L (1.7 mg/dL) [2 points]
+          Baseline Cr &gt;150 µmol/L (1.7 mg/dL) [2 points]
         </label>
         <label>
           <input type="checkbox" id="failureToThrive">
@@ -95,57 +139,14 @@
       <p id="riskDisplay"></p>
     </div>
     
-    <h2>Likelihood of CKD Stage ≥3 by PURK Score</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>PURK Score</th>
-          <th>1-Year Risk</th>
-          <th>5-Year Risk</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>0</td>
-          <td>6.1%</td>
-          <td>2.3%</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>15.2%</td>
-          <td>15.4%</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>12.5%</td>
-          <td>18.9%</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>43.9%</td>
-          <td>36.8%</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>62.2%</td>
-          <td>53.1%</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>41.7%</td>
-          <td>50.0%</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>90.9%</td>
-          <td>77.8%</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2>Risk Graph: CKD Stage ≥3 by PURK Score</h2>
+    <div class="chart-container">
+      <canvas id="riskChart"></canvas>
+    </div>
     
     <h2>Validation of the PURK Score</h2>
     <p class="info">
-      <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation <12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1).
+      <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation &lt;12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1).
     </p>
     <p class="info">
       <strong>External Validation:</strong> Across 10 pediatric centers (Canada, United States, India, Australia), the AUROC was 0.844 (95% CI 0.790–0.898) at 1 year (245 patients) and 0.838 (95% CI 0.773–0.903) at 5 years (194 patients). Geographic subgroup analyses confirmed significant prognostic value (AUROC ranges: 0.865–0.932 for 1-year and 0.827–0.960 for 5-year predictions).
@@ -153,6 +154,7 @@
   </div>
   
   <script>
+    // Function to calculate PURK score
     function calculatePURK() {
       let score = 0;
       // Retrieve checkbox states
@@ -178,15 +180,65 @@
         6: { oneYear: "90.9%", fiveYear: "77.8%" }
       };
       
-      // Get the risk info for the computed score (defaulting to N/A if not found)
       const risk = riskData.hasOwnProperty(score) ? riskData[score] : { oneYear: "N/A", fiveYear: "N/A" };
       
-      // Display results
+      // Display the results
       document.getElementById('scoreDisplay').innerText = "PURK Score: " + score;
       document.getElementById('riskDisplay').innerText =
         "Predicted risk of CKD stage ≥3: " + risk.oneYear + " at 1-year and " + risk.fiveYear + " at 5-year.";
       document.getElementById('resultDiv').style.display = "block";
     }
+    
+    // Data for the risk chart
+    const purkScores = [0, 1, 2, 3, 4, 5, 6];
+    const riskOneYear = [6.1, 15.2, 12.5, 43.9, 62.2, 41.7, 90.9];
+    const riskFiveYear = [2.3, 15.4, 18.9, 36.8, 53.1, 50.0, 77.8];
+    
+    // Create the chart once the DOM has loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('riskChart').getContext('2d');
+      const riskChart = new Chart(ctx, {
+        type: 'bar', // You can change this to 'line' for a line graph
+        data: {
+          labels: purkScores,
+          datasets: [
+            {
+              label: '1-Year Risk (%)',
+              data: riskOneYear,
+              backgroundColor: 'rgba(42, 77, 105, 0.6)',
+              borderColor: 'rgba(42, 77, 105, 1)',
+              borderWidth: 1
+            },
+            {
+              label: '5-Year Risk (%)',
+              data: riskFiveYear,
+              backgroundColor: 'rgba(168, 208, 230, 0.6)',
+              borderColor: 'rgba(168, 208, 230, 1)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Risk Percentage (%)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'PURK Score'
+              }
+            }
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
