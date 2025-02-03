@@ -24,7 +24,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
       color: #2a4d69; /* Dark pastel blue tone */
       margin-bottom: 20px;
@@ -87,7 +87,7 @@
     .result {
       margin-top: 20px;
       padding: 20px;
-      /* The background color will be set dynamically based on risk level */
+      /* Background color set dynamically */
       border: 1px solid #a8d0e6;
       border-radius: 8px;
     }
@@ -103,6 +103,17 @@
       font-size: 0.95em;
       color: #555;
       margin-bottom: 15px;
+    }
+    /* Validation Sites Styling */
+    .validation-sites {
+      margin-top: 40px;
+    }
+    .validation-sites ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .validation-sites li {
+      margin-bottom: 8px;
     }
     /* Responsive adjustments */
     @media (max-width: 600px) {
@@ -133,7 +144,7 @@
         <label for="baselineCr" class="option-label">
           <input type="checkbox" id="baselineCr">
           <span class="option-heading">Baseline Cr &gt;150 µmol/L</span>
-          <span class="option-description">(1.7 mg/dL), measured at ≥72 hours of life [2 points]</span>
+          <span class="option-description">(1.7 mg/dL), measured ≥72 hours of life [2 points]</span>
         </label>
         
         <label for="failureToThrive" class="option-label">
@@ -171,11 +182,41 @@
     
     <h2>Most Recent Validation of the PURK Score</h2>
     <p class="info">
-      <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation &lt;12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1). In the prospective internal validation cohort of 51 patients, AUROC for predicting CKD ≥3 was 0.897 (95% CI 0.795–0.998) at 1 year and 0.824 (95% CI 0.646–1.002) at 5 years.
+      <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation &lt;12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1). In the prospective internal validation cohort of 51 patients, AUROC for predicting CKD ≥3 was 0.897 (95% CI 0.795–0.998) at 1 year (38 patients) and 0.824 (95% CI 0.646–1.002) at 5 years (20 patients).
     </p>
     <p class="info">
       <strong>External Validation:</strong> Across 10 pediatric centers (Canada, United States, India, Australia), the AUROC was 0.844 (95% CI 0.790–0.898) at 1 year (245 patients) and 0.838 (95% CI 0.773–0.903) at 5 years (194 patients). Geographic subgroup analyses confirmed significant prognostic value (AUROC ranges: 0.865–0.932 for 1-year and 0.827–0.960 for 5-year predictions).
     </p>
+    
+    <div class="validation-sites">
+      <h2>PURK Validation Sites</h2>
+      
+      <h3>USA Sites</h3>
+      <ul>
+        <li>1. Riley Hospital for Children, Indianapolis, IN, USA</li>
+        <li>3. Cincinnati Children’s Hospital, Cincinnati, OH, USA</li>
+        <li>4. Nationwide Children’s, Columbus, OH, USA</li>
+        <li>5. Children’s Hospital of Orange County (CHOC), Orange, California</li>
+        <li>6. Children’s Hospital of Alabama, Birmingham, Alabama, USA</li>
+        <li>7. Seattle Children’s Hospital, Seattle, Washington, USA</li>
+      </ul>
+      
+      <h3>Australia Sites</h3>
+      <ul>
+        <li>1. Monash Children’s Hospital, Victoria, Melbourne, Australia</li>
+      </ul>
+      
+      <h3>Canadian Sites</h3>
+      <ul>
+        <li>1. Western University, London, Ontario, Canada</li>
+        <li>2. Dalhousie University, Halifax, Nova Scotia, Canada</li>
+      </ul>
+      
+      <h3>Asia Sites</h3>
+      <ul>
+        <li>1. Sanjay Gandhi Postgraduate Institute of Medical Sciences, Lucknow, Uttar Pradesh, India</li>
+      </ul>
+    </div>
   </div>
   
   <script>
