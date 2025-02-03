@@ -32,6 +32,7 @@
     p {
       line-height: 1.6;
     }
+    
     /* Form Styling */
     fieldset {
       border: 2px solid #a8d0e6;
@@ -45,18 +46,29 @@
       color: #2a4d69;
       padding: 0 10px;
     }
-    label {
+    /* New styling for option labels */
+    .option-label {
       display: block;
-      margin-bottom: 10px;
-      font-size: 1em;
-      color: #555;
+      margin-bottom: 15px;
       cursor: pointer;
     }
-    input[type="checkbox"] {
-      margin-right: 10px;
+    .option-label input {
       transform: scale(1.2);
       vertical-align: middle;
+      margin-right: 10px;
     }
+    .option-heading {
+      font-size: 1em;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+    .option-description {
+      display: block;
+      font-size: 0.85em;
+      color: #777;
+      margin-left: 35px; /* Indent the description text */
+    }
+    
     button {
       background: #2a4d69;
       color: #fff;
@@ -79,6 +91,7 @@
       border: 1px solid #a8d0e6;
       border-radius: 8px;
     }
+    
     /* Chart Container Styling */
     .chart-container {
       position: relative;
@@ -113,22 +126,31 @@
     <form id="purkForm">
       <fieldset>
         <legend>Patient Initial Presentation Variables</legend>
-        <label>
+        
+        <label for="baselineCr" class="option-label">
           <input type="checkbox" id="baselineCr">
-          Baseline Cr &gt;150 µmol/L (1.7 mg/dL) [2 points]
+          <span class="option-heading">Baseline Cr &gt;150 µmol/L</span>
+          <span class="option-description">(1.7 mg/dL) [2 points]</span>
         </label>
-        <label>
+        
+        <label for="failureToThrive" class="option-label">
           <input type="checkbox" id="failureToThrive">
-          Failure to thrive (failure to regain birthweight within 14 days or drop in growth curve without urosepsis) [2 points]
+          <span class="option-heading">Failure to thrive</span>
+          <span class="option-description">(failure to regain birthweight within 14 days or drop in growth curve without urosepsis) [2 points]</span>
         </label>
-        <label>
+        
+        <label for="highGradeVUR" class="option-label">
           <input type="checkbox" id="highGradeVUR">
-          High grade VUR on voiding cystourethrogram (grade ≥3) [1 point]
+          <span class="option-heading">High grade VUR on voiding cystourethrogram</span>
+          <span class="option-description">(grade ≥3) [1 point]</span>
         </label>
-        <label>
+        
+        <label for="renalDysplasia" class="option-label">
           <input type="checkbox" id="renalDysplasia">
-          Renal dysplasia on ultrasound (dysplasia, cortical cysts, diffuse scarring, or increased echogenicity) [1 point]
+          <span class="option-heading">Renal dysplasia on ultrasound</span>
+          <span class="option-description">(dysplasia, cortical cysts, diffuse scarring, or increased echogenicity) [1 point]</span>
         </label>
+        
       </fieldset>
       <button type="button" onclick="calculatePURK()">Calculate PURK Score</button>
     </form>
@@ -198,7 +220,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const ctx = document.getElementById('riskChart').getContext('2d');
       const riskChart = new Chart(ctx, {
-        type: 'bar', // You can change this to 'line' for a line graph
+        type: 'bar', // Change to 'line' if you prefer a line graph
         data: {
           labels: purkScores,
           datasets: [
