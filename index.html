@@ -87,7 +87,7 @@
     .result {
       margin-top: 20px;
       padding: 20px;
-      background: #e6f7ff;
+      /* The background color will be set dynamically based on risk level */
       border: 1px solid #a8d0e6;
       border-radius: 8px;
     }
@@ -133,7 +133,7 @@
         <label for="baselineCr" class="option-label">
           <input type="checkbox" id="baselineCr">
           <span class="option-heading">Baseline Cr &gt;150 µmol/L</span>
-          <span class="option-description">(1.7 mg/dL), measured ≥72 hours of life [2 points]</span>
+          <span class="option-description">(1.7 mg/dL), measured at ≥72 hours of life [2 points]</span>
         </label>
         
         <label for="failureToThrive" class="option-label">
@@ -169,7 +169,7 @@
       <canvas id="riskChart"></canvas>
     </div>
     
-    <h2>Most Recent Validation of the PURK Score</h2>
+    <h2>Validation of the PURK Score</h2>
     <p class="info">
       <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation &lt;12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1). In the prospective internal validation cohort of 51 patients, AUROC for predicting CKD ≥3 was 0.897 (95% CI 0.795–0.998) at 1 year (38 patients) and 0.824 (95% CI 0.646–1.002) at 5 years (20 patients).
     </p>
@@ -179,7 +179,7 @@
   </div>
   
   <script>
-    // Function to calculate PURK score
+    // Function to calculate PURK score and adjust the result box color
     function calculatePURK() {
       let score = 0;
       // Retrieve checkbox states
@@ -207,8 +207,21 @@
       
       const risk = riskData.hasOwnProperty(score) ? riskData[score] : { oneYear: "N/A", fiveYear: "N/A" };
       
-      // Display the results
-      document.getElementById('scoreDisplay').innerText = "PURK Score: " + score;
+      // Set background color and risk level based on score
+      let riskColor, riskLevel;
+      if (score <= 1) {
+        riskColor = "#d4edda"; // Pastel green for Low Risk
+        riskLevel = "Low Risk";
+      } else if (score <= 3) {
+        riskColor = "#fff3cd"; // Pastel yellow for Intermediate Risk
+        riskLevel = "Intermediate Risk";
+      } else {
+        riskColor = "#f8d7da"; // Pastel red for High Risk
+        riskLevel = "High Risk";
+      }
+      
+      document.getElementById('resultDiv').style.backgroundColor = riskColor;
+      document.getElementById('scoreDisplay').innerText = "PURK Score: " + score + " (" + riskLevel + ")";
       document.getElementById('riskDisplay').innerText =
         "Predicted risk of CKD stage ≥3: " + risk.oneYear + " at 1-year and " + risk.fiveYear + " at 5-year.";
       document.getElementById('resultDiv').style.display = "block";
