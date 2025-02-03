@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PURK Score Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    fieldset {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    legend {
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+    button {
+      display: block;
+      margin: auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .info {
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>PURK Score Calculator</h1>
+    <p>
+      This tool calculates the PURK score—designed to risk-stratify boys with posterior urethral valve (PUV) at high risk of chronic kidney disease (CKD) stage ≥3.
+    </p>
+    
+    <form id="purkForm">
+      <fieldset>
+        <legend>Patient Initial Presentation Variables</legend>
+        <label>
+          <input type="checkbox" id="baselineCr">
+          Baseline Cr >150 µmol/L (1.7 mg/dL) [2 points]
+        </label>
+        <label>
+          <input type="checkbox" id="failureToThrive">
+          Failure to thrive (failure to regain birthweight within 14 days or drop in growth curve without urosepsis) [2 points]
+        </label>
+        <label>
+          <input type="checkbox" id="highGradeVUR">
+          High grade VUR on voiding cystourethrogram (grade ≥3) [1 point]
+        </label>
+        <label>
+          <input type="checkbox" id="renalDysplasia">
+          Renal dysplasia on ultrasound (dysplasia, cortical cysts, diffuse scarring, or increased echogenicity) [1 point]
+        </label>
+      </fieldset>
+      <button type="button" onclick="calculatePURK()">Calculate PURK Score</button>
+    </form>
+    
+    <div class="result" id="resultDiv" style="display: none;">
+      <h2>Results</h2>
+      <p id="scoreDisplay"></p>
+      <p id="riskDisplay"></p>
+    </div>
+    
+    <h2>Likelihood of CKD Stage ≥3 by PURK Score</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>PURK Score</th>
+          <th>1-Year Risk</th>
+          <th>5-Year Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>6.1%</td>
+          <td>2.3%</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>15.2%</td>
+          <td>15.4%</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>12.5%</td>
+          <td>18.9%</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>43.9%</td>
+          <td>36.8%</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>62.2%</td>
+          <td>53.1%</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>41.7%</td>
+          <td>50.0%</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>90.9%</td>
+          <td>77.8%</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Validation of the PURK Score</h2>
+    <p class="info">
+      <strong>Internal Validation:</strong> In a retrospective cohort of 120 patients (first presentation <12 months), the AUROC for predicting CKD stage ≥3 was 0.907 at 1-year and 0.873 at 5-year (institution 1).
+    </p>
+    <p class="info">
+      <strong>External Validation:</strong> Across 10 pediatric centers (Canada, United States, India, Australia), the AUROC was 0.844 (95% CI 0.790–0.898) at 1 year (245 patients) and 0.838 (95% CI 0.773–0.903) at 5 years (194 patients). Geographic subgroup analyses confirmed significant prognostic value (AUROC ranges: 0.865–0.932 for 1-year and 0.827–0.960 for 5-year predictions).
+    </p>
+  </div>
+  
+  <script>
+    function calculatePURK() {
+      let score = 0;
+      // Retrieve checkbox states
+      const baselineCr = document.getElementById('baselineCr').checked;
+      const failureToThrive = document.getElementById('failureToThrive').checked;
+      const highGradeVUR = document.getElementById('highGradeVUR').checked;
+      const renalDysplasia = document.getElementById('renalDysplasia').checked;
+      
+      // Add points based on selections
+      if (baselineCr) score += 2;
+      if (failureToThrive) score += 2;
+      if (highGradeVUR) score += 1;
+      if (renalDysplasia) score += 1;
+      
+      // Define risk percentages based on the computed score
+      const riskData = {
+        0: { oneYear: "6.1%", fiveYear: "2.3%" },
+        1: { oneYear: "15.2%", fiveYear: "15.4%" },
+        2: { oneYear: "12.5%", fiveYear: "18.9%" },
+        3: { oneYear: "43.9%", fiveYear: "36.8%" },
+        4: { oneYear: "62.2%", fiveYear: "53.1%" },
+        5: { oneYear: "41.7%", fiveYear: "50.0%" },
+        6: { oneYear: "90.9%", fiveYear: "77.8%" }
+      };
+      
+      // Get the risk info for the computed score (defaulting to N/A if not found)
+      const risk = riskData.hasOwnProperty(score) ? riskData[score] : { oneYear: "N/A", fiveYear: "N/A" };
+      
+      // Display results
+      document.getElementById('scoreDisplay').innerText = "PURK Score: " + score;
+      document.getElementById('riskDisplay').innerText =
+        "Predicted risk of CKD stage ≥3: " + risk.oneYear + " at 1-year and " + risk.fiveYear + " at 5-year.";
+      document.getElementById('resultDiv').style.display = "block";
+    }
+  </script>
+</body>
+</html>
